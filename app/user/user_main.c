@@ -62,6 +62,7 @@ LOCAL void ICACHE_FLASH_ATTR key1ShortPress(void)
 {
     GIZWITS_LOG("#### KEY1 short press ,Production Mode\n");
     
+    /* 进入产测模式 */
     gizwitsSetMode(WIFI_PRODUCTION_TEST);
 }
 
@@ -74,6 +75,7 @@ LOCAL void ICACHE_FLASH_ATTR key1LongPress(void)
 {
     GIZWITS_LOG("#### key1 long press, default setup\n");
     
+    /* 重置模组，恢复出厂设置后进入快联模式 */
     gizwitsSetMode(WIFI_RESET_MODE);
 }
 
@@ -86,6 +88,7 @@ LOCAL void ICACHE_FLASH_ATTR key2ShortPress(void)
 {
     GIZWITS_LOG("#### key2 short press, soft ap mode \n");
 
+    /* 设置AP配网模式 */
     gizwitsSetMode(WIFI_SOFTAP_MODE);
 }
 
@@ -98,6 +101,7 @@ LOCAL void ICACHE_FLASH_ATTR key2LongPress(void)
 {
     GIZWITS_LOG("#### key2 long press, airlink mode\n");
     
+    /* 设置AIRLINK配网模式 */
     gizwitsSetMode(WIFI_AIRLINK_MODE);
 }
 
@@ -139,14 +143,20 @@ void ICACHE_FLASH_ATTR user_init(void)
 {
     uint32_t system_free_size = 0;
 
+    /* 设置上电是否自动连接已记录的路由热点，默认为自动连接 */
     wifi_station_set_auto_connect(1);
+    /* 设置成非睡眠模式 */
     wifi_set_sleep_type(NONE_SLEEP_T);//set none sleep mode
+    /* 设置允许的TCP最大连接数，在内存足够的情况下，建议不超过10，默认值为5 */
     espconn_tcp_set_max_con(10);
+    /* 串口初始化工作 */
     uart_init_3(9600,115200);
+    /* 串口1作为日志输出接口 */
     UART_SetPrintPort(1);
     GIZWITS_LOG( "---------------SDK version:%s--------------\n", system_get_sdk_version());
     GIZWITS_LOG( "system_get_free_heap_size=%d\n",system_get_free_heap_size());
 
+    /* 查询当前启动的信息 */
     struct rst_info *rtc_info = system_get_rst_info();
     GIZWITS_LOG( "reset reason: %x\n", rtc_info->reason);
     if (rtc_info->reason == REASON_WDT_RST ||
@@ -161,6 +171,7 @@ void ICACHE_FLASH_ATTR user_init(void)
                 rtc_info->epc1, rtc_info->epc2, rtc_info->epc3, rtc_info->excvaddr, rtc_info->depc);
     }
 
+    /* 查看系统使用的固件空间 */
     if (system_upgrade_userbin_check() == UPGRADE_FW_BIN1)
     {
         GIZWITS_LOG( "---UPGRADE_FW_BIN1---\n");
@@ -170,9 +181,12 @@ void ICACHE_FLASH_ATTR user_init(void)
         GIZWITS_LOG( "---UPGRADE_FW_BIN2---\n");
     }
 
+    /* 按键服务初始化 */
     keyInit();
 
+    /* 机智云服务初始化 */
     gizwitsInit();  
 
+    /* 打印用户可用空间，仅供参考，WiFi通讯也会占用内存 */
     GIZWITS_LOG("--- system_free_size = %d ---\n", system_get_free_heap_size());
 }
