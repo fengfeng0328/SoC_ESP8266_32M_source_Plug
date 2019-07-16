@@ -116,6 +116,8 @@ LOCAL void ICACHE_FLASH_ATTR keyInit(void)
                                 key1LongPress, key1ShortPress);
     singleKey[1] = keyInitOne(KEY_1_IO_NUM, KEY_1_IO_MUX, KEY_1_IO_FUNC,
                                 key2LongPress, key2ShortPress);
+
+    /* 赋值到全局变量 */
     keys.singleKey = singleKey;
     keyParaInit(&keys);
 }

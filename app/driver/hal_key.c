@@ -36,6 +36,7 @@ static ICACHE_FLASH_ATTR uint16_t keyValueRead(keys_typedef_t * keys)
     //GPIO Cyclic scan
     for(i = 0; i < keys->keyTotolNum; i++)
     {
+    	/* 低电平有效 */
         if(!GPIO_INPUT_GET(keys->singleKey[i]->gpio_id))
         {
             G_SET_BIT(read_key, keys->singleKey[i]->gpio_number);
@@ -69,20 +70,21 @@ static uint16_t ICACHE_FLASH_ATTR keyStateRead(keys_typedef_t * keys)
         Key_Check = 1;
     }
     
+    /* 每隔30毫秒检查一次按键电平状态 */
     if(Key_Check == 1)
     {
         Key_Check = 0;
         
         //Gets the current key trigger value
-        Key_press = keyValueRead(keys); 
+        Key_press = keyValueRead(keys); 				// Key_press不等于零，说明按键按下,值表示是哪个按键按下
         
         switch (Key_State)
         {
             //"First capture key" state
             case 0:
-                if(Key_press != 0)
+                if(Key_press != 0)						// 判断是否有按键按下
                 {
-                    Key_Prev = Key_press;
+                    Key_Prev = Key_press;				// 记录按键
                     Key_State = 1;
                 }
     
@@ -90,10 +92,10 @@ static uint16_t ICACHE_FLASH_ATTR keyStateRead(keys_typedef_t * keys)
                 
                 //"Capture valid key" status
             case 1:
-                if(Key_press == Key_Prev)
+                if(Key_press == Key_Prev)				// 30毫秒间隔按键状态没有变化则执行
                 {
                     Key_State = 2;
-                    Key_return= Key_Prev | KEY_DOWN;
+                    Key_return= Key_Prev | KEY_DOWN;	// Key_return值 = (某个按键 | 按键按下)
                 }
                 else
                 {
@@ -105,22 +107,22 @@ static uint16_t ICACHE_FLASH_ATTR keyStateRead(keys_typedef_t * keys)
                 //"Capture long press" status
             case 2:
     
-                if(Key_press != Key_Prev)
+                if(Key_press != Key_Prev)				// 30毫秒间隔按键状态变化则执行
                 {
                     Key_State = 0;
                     Key_LongCheck = 0;
-                    Key_return = Key_Prev | KEY_UP;
+                    Key_return = Key_Prev | KEY_UP;		// Key_return值 = (某个按键 | 按键松开)
                     return Key_return;
                 }
     
-                if(Key_press == Key_Prev)
+                if(Key_press == Key_Prev)				// 30毫秒间隔按键状态没有变化则执行
                 {
                     Key_LongCheck++;
                     if(Key_LongCheck >= (PRESS_LONG_TIME / DEBOUNCE_TIME))    //长按3S (消抖30MS * 100)
                     {
                         Key_LongCheck = 0;
                         Key_State = 3;
-                        Key_return= Key_press |  KEY_LONG;
+                        Key_return= Key_press |  KEY_LONG;	// Key_return = (某个按键 | 长按)
                         return Key_return;
                     }
                 }
@@ -128,7 +130,7 @@ static uint16_t ICACHE_FLASH_ATTR keyStateRead(keys_typedef_t * keys)
                 
                 //"Restore the initial" state
             case 3:
-                if(Key_press != Key_Prev)
+                if(Key_press != Key_Prev)					// 能执行该步骤，已进入长按
                 {
                     Key_State = 0;
                 }
@@ -151,9 +153,9 @@ void ICACHE_FLASH_ATTR gokitKeyHandle(keys_typedef_t * keys)
     uint8_t i = 0;
     uint16_t key_value = 0;
 
-    key_value = keyStateRead(keys); 
+    key_value = keyStateRead(keys); 	/* key_value = (某个按键 | 按键状态) */
     
-    if(!key_value) return;
+    if(!key_value) return;				/* key_value = 0--->说明按键没有进行任何操作 */
     
     //Check short press button
     if(key_value & KEY_UP)
@@ -222,6 +224,7 @@ key_typedef_t * ICACHE_FLASH_ATTR keyInitOne(uint8 gpio_id, uint32 gpio_name, ui
     singleKey->long_press = long_press;
     singleKey->short_press = short_press;
     
+    /* 按键数量，全局变量，每添加一个按键递加1 */
     keyTotolNum++;    
 
     return singleKey;
@@ -267,7 +270,7 @@ void ICACHE_FLASH_ATTR keyParaInit(keys_typedef_t * keys)
         os_printf("gpio_name %d \r\n", keys->singleKey[tem_i]->gpio_id); 
     }
     
-    //key timer start
+    // 使能按键定时器，最后一个参数置1，表示定时器可重复
     os_timer_arm(&keys->key_timer, keys->key_timer_ms, 1); 
 }
 

@@ -31,7 +31,7 @@
 #define DEBOUNCE_TIME                           30
 #define PRESS_LONG_TIME                         3000
 
-#define NO_KEY                                  0x0000
+#define NO_KEY                                  0x0000			// 按键不触发
 #define KEY_DOWN                                0x1000
 #define KEY_UP                                  0x2000
 #define KEY_LIAN                                0x4000
@@ -45,15 +45,15 @@ typedef struct
     uint8 gpio_id;
     uint8 gpio_func;
     uint32 gpio_name;
-    gokit_key_function short_press; 
-    gokit_key_function long_press; 
+    gokit_key_function short_press; 	// 短按键回调函数
+    gokit_key_function long_press; 		// 长按键回调函数
 }key_typedef_t; 
 
 typedef struct
 {
-    uint8 keyTotolNum;
-    os_timer_t key_timer;
-    uint8 key_timer_ms; 
+    uint8 keyTotolNum;			// 按键总数量
+    os_timer_t key_timer;		// 按键定时器句柄
+    uint8 key_timer_ms; 		// 按键定时器重复时间
     key_typedef_t ** singleKey; 
 }keys_typedef_t; 
 
