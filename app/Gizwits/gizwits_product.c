@@ -60,11 +60,17 @@ int8_t ICACHE_FLASH_ATTR gizwitsEventProcess(eventInfo_t *info, uint8_t *data, u
 
 
         case WIFI_SOFTAP:
+        	GIZWITS_LOG("@@@@ softap event\n");
             break;
+
         case WIFI_AIRLINK:
+        	GIZWITS_LOG("@@@@ airlink event\n");
             break;
+
         case WIFI_STATION:
+        	GIZWITS_LOG("@@@@ station event\n");
             break;
+
         case WIFI_CON_ROUTER:
             GIZWITS_LOG("@@@@ connected router\n");
  
