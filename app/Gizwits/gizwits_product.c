@@ -119,6 +119,12 @@ void ICACHE_FLASH_ATTR userHandle(void)
 
     */
 	 
+	/*
+	 * @ 向任务发送消息
+	 * @ 任务优先级，与建立时的任务优先级对应
+	 * @ 消息类型
+	 * @ 消息参数
+	 */
     system_os_post(USER_TASK_PRIO_2, SIG_UPGRADE_DATA, 0);
 }
 

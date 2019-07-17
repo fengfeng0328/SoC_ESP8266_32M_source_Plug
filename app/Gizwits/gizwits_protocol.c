@@ -534,6 +534,7 @@ void devAuthResultCb( int32 result )
 {
     GIZWITS_LOG("devAuthResultCb result=%d \n",result);
 
+    /* 用户初始化函数，可以做一些个性化设置 */
     userInit();
 
     system_os_task(gizwitsTask, USER_TASK_PRIO_2, gizwitsTaskQueue, gizwitsTaskQueueLen);
@@ -570,7 +571,7 @@ void ICACHE_FLASH_ATTR gizwitsInit(void)
         GIZWITS_LOG("Failed to get mac addr \r\n");
     }
 
-
+    /* 创建机智云进程任务，用于接收云端数据 */
     system_os_task(gagentProcessRun, USER_TASK_PRIO_1, TaskQueue, TaskQueueLen);
 
     attrs.mBindEnableTime = exchangeBytes(NINABLETIME);

@@ -219,7 +219,7 @@ typedef struct
 /** Protocol processing related structure */
 typedef struct
 {
-    uint8_t mac[MAC_LEN_8266];
+    uint8_t mac[MAC_LEN_8266];						///< MAC地址
     uint8_t connectM2MFlag;
     uint32_t timerMsCount;                          ///< Time Count (Ms)
     uint8_t transparentBuff[BUFFER_LEN_MAX];        ///< Transparent data storage area

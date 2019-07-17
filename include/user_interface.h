@@ -62,7 +62,7 @@ void system_upgrade_flag_set(uint8 flag);
 void system_timer_reinit(void);
 uint32 system_get_time(void);
 
-/* user task's prio must be 0/1/2 !!!*/
+/* user task's prio must be 0/1/2，即最多能创建3个任务 !!!*/
 enum {
     USER_TASK_PRIO_0 = 0,
     USER_TASK_PRIO_1,

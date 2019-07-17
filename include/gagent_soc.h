@@ -21,15 +21,15 @@ typedef void (*gagentAuthCb)( int32 result );
 
 struct devAttrs
 {
-    unsigned short mBindEnableTime;
-    unsigned char mstrProtocolVer[MCU_PROTOCOLVER_LEN];
-    unsigned char mstrP0Ver[MCU_P0VER_LEN];
-    unsigned char mstrDevHV[MCU_HARDVER_LEN];
-    unsigned char mstrDevSV[MCU_SOFTVER_LEN];
-    unsigned char mstrProductKey[PK_LEN];
-    unsigned char mstrPKSecret[PK_SECRET_LEN];
+    unsigned short mBindEnableTime;						// 绑定时间
+    unsigned char mstrProtocolVer[MCU_PROTOCOLVER_LEN];	// 协议版本号
+    unsigned char mstrP0Ver[MCU_P0VER_LEN];				// P0协议版本号
+    unsigned char mstrDevHV[MCU_HARDVER_LEN];			// 硬件版本号
+    unsigned char mstrDevSV[MCU_SOFTVER_LEN];			// 软件版本号
+    unsigned char mstrProductKey[PK_LEN];				// 产品标识序列码
+    unsigned char mstrPKSecret[PK_SECRET_LEN];			// 产品密码
     unsigned char mDevAttr[MCU_MCUATTR_LEN];
-    unsigned char mstrSdkVerLow[SDK_USER_VER_LEN];
+    unsigned char mstrSdkVerLow[SDK_USER_VER_LEN];		// 固件SDK版本号
     gagentAuthCb  pUserStartFun;
 };
 
