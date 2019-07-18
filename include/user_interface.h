@@ -24,13 +24,13 @@
 #endif
 
 enum rst_reason {
-	REASON_DEFAULT_RST		= 0,
-	REASON_WDT_RST			= 1,
-	REASON_EXCEPTION_RST	= 2,
-	REASON_SOFT_WDT_RST   	= 3,
-	REASON_SOFT_RESTART 	= 4,
-	REASON_DEEP_SLEEP_AWAKE	= 5,
-	REASON_EXT_SYS_RST      = 6
+	REASON_DEFAULT_RST		= 0,	// 开机正常启动
+	REASON_WDT_RST			= 1,	// 硬件看门狗复位
+	REASON_EXCEPTION_RST	= 2,	// 异常重置，GPIO状态不变
+	REASON_SOFT_WDT_RST   	= 3,	// 软件看门狗复位
+	REASON_SOFT_RESTART 	= 4,	// 软件重启，GPIO状态不变
+	REASON_DEEP_SLEEP_AWAKE	= 5,	// 深度睡眠，唤醒
+	REASON_EXT_SYS_RST      = 6		// 外部系统复位，例如硬件复位引脚
 };
 
 struct rst_info{

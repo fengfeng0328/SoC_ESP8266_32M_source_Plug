@@ -154,7 +154,7 @@ void ICACHE_FLASH_ATTR gizWiFiStatus(uint16_t value)
         GIZWITS_LOG("@@@@ GAgentStatus[hex]:%02x | [Bin]:%d,%d,%d,%d,%d,%d \r\n", status.value, status.types.con_m2m, status.types.con_route, status.types.binding, status.types.onboarding, status.types.station, status.types.softap);
 
         //OnBoarding mode status
-        if(1 == status.types.onboarding)
+        if(1 == status.types.onboarding)		/* status.types.onboarding变量标识是否处于绑定模式下配网 */
         {
             if(1 == status.types.softap)
             {
@@ -322,7 +322,7 @@ int32_t ICACHE_FLASH_ATTR gizIssuedProcess(uint8_t *didPtr, uint8_t *inData, uin
     { 
         switch(inData[0]) 
         {
-            case ACTION_CONTROL_DEVICE:
+            case ACTION_CONTROL_DEVICE:		/* 对应机智云action位，点击开关按钮，回调做相关操作 */
          
                 *outLen = 0; 
                 break;

@@ -156,7 +156,7 @@ void ICACHE_FLASH_ATTR user_init(void)
     /* 串口1作为日志输出接口 */
     UART_SetPrintPort(1);
     GIZWITS_LOG( "---------------SDK version:%s--------------\n", system_get_sdk_version());
-    GIZWITS_LOG( "system_get_free_heap_size=%d\n",system_get_free_heap_size());
+    GIZWITS_LOG( "system_get_free_heap_size=%d\n",system_get_free_heap_size());		// 剩余32k内存左右
 
     /* 查询当前启动的信息 */
     struct rst_info *rtc_info = system_get_rst_info();
@@ -189,6 +189,6 @@ void ICACHE_FLASH_ATTR user_init(void)
     /* 机智云服务初始化 */
     gizwitsInit();  
 
-    /* 打印用户可用空间，仅供参考，WiFi通讯也会占用内存 */
+    /* 打印用户可用空间，仅供参考，WiFi通讯也会占用内存，打印出来剩余25k内存左右 */
     GIZWITS_LOG("--- system_free_size = %d ---\n", system_get_free_heap_size());
 }

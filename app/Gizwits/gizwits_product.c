@@ -93,11 +93,11 @@ int8_t ICACHE_FLASH_ATTR gizwitsEventProcess(eventInfo_t *info, uint8_t *data, u
             GIZWITS_LOG("@@@@ RSSI %d\n", wifiData->rssi);
             break;
         case TRANSPARENT_DATA:
-            GIZWITS_LOG("TRANSPARENT_DATA \n");
+            GIZWITS_LOG("@@@@ TRANSPARENT_DATA \n");
             //user handle , Fetch data from [data] , size is [len]
             break;
         case MODULE_INFO:
-            GIZWITS_LOG("MODULE INFO ...\n");
+            GIZWITS_LOG("@@@@ MODULE INFO ...\n");
             break;
             
         default:
